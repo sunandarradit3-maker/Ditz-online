@@ -1,0 +1,6 @@
+{
+  "name": "DiTzStore",
+  "description": "Toko online untuk produk digital dan layanan IT profesional.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
