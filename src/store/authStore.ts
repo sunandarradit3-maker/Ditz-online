@@ -22,18 +22,21 @@ export const useAuthStore = create<AuthState>((set) => ({
 
     if (userDoc.exists()) {
       const userData = userDoc.data() as User;
+      
+      // Auto-upgrade the specific owner email to admin if they aren't already
+      if (email === 'tonicafogado@gmail.com' && userData.role !== 'admin') {
+        userData.role = 'admin';
+        await setDoc(userDocRef, userData, { merge: true });
+      }
+      
       set({ user: userData });
       return userData;
     } else {
-      // Check if any users exist to determine if this should be the first admin
-      const usersQuery = await getDocs(collection(db, 'users'));
-      const isFirstUser = usersQuery.empty;
-
       const newUser: User = {
         id: uid,
         email,
         name,
-        role: isFirstUser ? 'admin' : 'customer',
+        role: email === 'tonicafogado@gmail.com' ? 'admin' : 'customer',
         createdAt: Date.now(),
       };
       await setDoc(userDocRef, newUser);
